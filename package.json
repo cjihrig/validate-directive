@@ -1,0 +1,36 @@
+{
+  "name": "validate-directive",
+  "version": "0.1.0",
+  "description": "A GraphQL directive for input validation",
+  "license": "MIT",
+  "author": "Colin J. Ihrig <cjihrig@gmail.com> (http://www.cjihrig.com/)",
+  "main": "lib/index.js",
+  "homepage": "https://github.com/cjihrig/validate-directive#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cjihrig/validate-directive.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cjihrig/validate-directive/issues"
+  },
+  "scripts": {
+    "test": "lab -v -t 62 --leaks"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "dependencies": {
+    "graphql": "^15.5.1",
+    "graphql-tools": "^7.0.5",
+    "joi": "^17.4.0"
+  },
+  "devDependencies": {
+    "@hapi/lab": "24.x.x"
+  },
+  "keywords": [
+    "graphql",
+    "directive",
+    "validate",
+    "validation"
+  ]
+}
