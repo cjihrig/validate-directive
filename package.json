@@ -14,7 +14,9 @@
     "url": "https://github.com/cjihrig/validate-directive/issues"
   },
   "scripts": {
-    "test": "lab -v -t 62 --leaks"
+    "lint": "belly-button -f -i test/**.js",
+    "pretest": "npm run lint",
+    "test": "lab -v -t 95 --leaks"
   },
   "engines": {
     "node": ">=12.0.0"
@@ -25,7 +27,9 @@
     "joi": "^17.4.0"
   },
   "devDependencies": {
-    "@hapi/lab": "24.x.x"
+    "@hapi/lab": "24.x.x",
+    "apollo-server": "^2.25.2",
+    "belly-button": "7.x.x"
   },
   "keywords": [
     "graphql",
