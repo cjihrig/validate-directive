@@ -24,3 +24,14 @@ describe('GraphQL Compatibility', () => {
     Assert.strictEqual(result.data.listType, true);
   });
 });
+
+describe('Boolean', () => {
+  it('handles non-nullable types', async () => {
+    const server = createServer();
+    const query = '{ validate(boolean: true) }';
+    const result = await server.executeOperation({ query });
+
+    Assert.strictEqual(result.errors, undefined);
+    Assert.strictEqual(result.data.validate, true);
+  });
+});

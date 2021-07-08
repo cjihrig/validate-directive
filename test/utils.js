@@ -9,6 +9,9 @@ function createServer () {
 
     type Query {
       validate (
+        # Boolean validation - useless, just making sure it works.
+        boolean: Boolean @validate
+
         # Number validation.
         greater: Float @validate(greater: 5)
         integer: Float @validate(integer: TRUE)
