@@ -16,7 +16,7 @@
   "scripts": {
     "lint": "belly-button -f -i test/**.js",
     "pretest": "npm run lint",
-    "test": "lab -v -t 96 --leaks"
+    "test": "lab -v -t 98 --leaks"
   },
   "engines": {
     "node": ">=12.0.0"

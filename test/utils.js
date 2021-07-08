@@ -9,6 +9,23 @@ function createServer () {
 
     type Query {
       validate (
+        # Number validation.
+        greater: Float @validate(greater: 5)
+        integer: Float @validate(integer: TRUE)
+        less: Float @validate(less: 10)
+        max: Float @validate(max: 3)
+        min: Float @validate(min: -5)
+        multiple: Float @validate(multiple: 2)
+        negative: Float @validate(negative: TRUE)
+        port: Float @validate(port: TRUE)
+        positive: Float @validate(positive: TRUE)
+        precision: Float @validate(precision: 2)
+        sign: Float @validate(sign: NEGATIVE)
+        unsafeAllowed: Float @validate(unsafe: true)
+        unsafeNotAllowed: Float @validate(unsafe: false)
+        doubleInteger: Int @validate(integer: TRUE)
+
+        # String validation.
         alphanum: String @validate(alphanum: TRUE)
         base64: String @validate(base64: { paddingRequired: false })
         case: String @validate(case: UPPER)
