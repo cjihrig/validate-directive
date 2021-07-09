@@ -7,6 +7,8 @@ function createServer () {
   const typeDefs = gql`
     ${ValidateDirective.sdl}
 
+    enum TestEnum { A B C }
+
     type Query {
       validate (
         # Boolean validation - useless, just making sure it works.
@@ -42,6 +44,11 @@ function createServer () {
       listType (
         foo: [String!]! @validate(case: LOWER)
       ): Boolean
+      enumType (
+        foo: TestEnum @validate(
+          alphanum: TRUE, case: UPPER, length: { limit: 1 }
+        )
+      ): Boolean
     }
   `;
   const resolvers = {
@@ -53,6 +60,9 @@ function createServer () {
         return true;
       },
       listType (parent, args, context, info) {
+        return true;
+      },
+      enumType (parent, args, context, info) {
         return true;
       }
     }

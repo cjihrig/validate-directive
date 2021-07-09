@@ -23,6 +23,15 @@ describe('GraphQL Compatibility', () => {
     Assert.strictEqual(result.errors, undefined);
     Assert.strictEqual(result.data.listType, true);
   });
+
+  it('handles enum types', async () => {
+    const server = createServer();
+    const query = '{ enumType(foo: C) }';
+    const result = await server.executeOperation({ query });
+
+    Assert.strictEqual(result.errors, undefined);
+    Assert.strictEqual(result.data.enumType, true);
+  });
 });
 
 describe('Boolean', () => {
