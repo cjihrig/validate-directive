@@ -1,6 +1,6 @@
 {
   "name": "validate-directive",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A GraphQL directive for input validation",
   "license": "MIT",
   "author": "Colin J. Ihrig <cjihrig@gmail.com> (http://www.cjihrig.com/)",
