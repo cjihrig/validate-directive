@@ -42,7 +42,8 @@ function createServer () {
         foo: String! @validate(case: LOWER)
       ): Boolean
       listType (
-        foo: [String!]! @validate(case: LOWER)
+        foo: [String] @validate(case: LOWER)
+        arrayLength: [String] @validate(case: LOWER, arrayLength: 3)
       ): Boolean
       enumType (
         foo: TestEnum @validate(
@@ -77,4 +78,33 @@ function createServer () {
   });
 }
 
-module.exports = { createServer };
+
+function createServerWithListOpsOnNonList () {
+  const typeDefs = gql`
+    ${ValidateDirective.sdl}
+
+    type Query {
+      validate (
+        integer: Float @validate(arrayLength: 3)
+      ): Boolean
+    }
+  `;
+  const resolvers = {
+    Query: {
+      validate (parent, args, context, info) {
+        return true;
+      }
+    }
+  };
+
+  return new ApolloServer({
+    typeDefs,
+    resolvers,
+    schemaDirectives: {
+      validate: ValidateDirective
+    }
+  });
+}
+
+
+module.exports = { createServer, createServerWithListOpsOnNonList };
