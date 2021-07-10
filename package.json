@@ -14,7 +14,7 @@
     "url": "https://github.com/cjihrig/validate-directive/issues"
   },
   "scripts": {
-    "lint": "belly-button -f -i test/**.js",
+    "lint": "belly-button -f",
     "pretest": "npm run lint",
     "test": "lab -v -t 100 --leaks"
   },

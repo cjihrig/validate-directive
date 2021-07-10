@@ -14,6 +14,14 @@ function createServer () {
         # Boolean validation - useless, just making sure it works.
         boolean: Boolean @validate
 
+        # Date validation.
+        dateGreater: String @validate(type: DATE, dateGreater: "1-1-1974")
+        dateLess: String @validate(type: DATE, dateLess: "12-31-1973")
+        dateMax: String @validate(type: DATE, dateMax: "12-31-1973")
+        dateMin: String @validate(type: DATE, dateMin: "1-1-1974")
+        iso: String @validate(type: DATE, iso: TRUE)
+        timestamp: Int @validate(type: DATE, timestamp: UNIX)
+
         # Number validation.
         greater: Float @validate(greater: 5)
         integer: Float @validate(integer: TRUE)
@@ -50,6 +58,10 @@ function createServer () {
           alphanum: TRUE, case: UPPER, length: { limit: 1 }
         )
       ): Boolean
+      typeConversion (
+        stringToDate: String @validate(type: DATE)
+        integerToDate: Int @validate(type: DATE)
+      ): Boolean
     }
 
     type Mutation {
@@ -70,6 +82,9 @@ function createServer () {
         return true;
       },
       enumType (parent, args, context, info) {
+        return true;
+      },
+      typeConversion (parent, args, context, info) {
         return true;
       }
     },

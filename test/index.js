@@ -53,3 +53,21 @@ describe('Boolean', () => {
     Assert.strictEqual(result.data.validate, true);
   });
 });
+
+describe('Type Conversion', () => {
+  it('can convert between certain types during validation', async () => {
+    const server = createServer();
+    const conversions = [
+      ['stringToDate', '"5-26-2020"'],
+      ['integerToDate', 5000]
+    ];
+
+    for (const [arg, value] of conversions) {
+      const query = `{ typeConversion(${arg}: ${value}) }`;
+      const result = await server.executeOperation({ query });
+
+      Assert.strictEqual(result.errors, undefined);
+      Assert.strictEqual(result.data.typeConversion, true);
+    }
+  });
+});
