@@ -51,6 +51,12 @@ function createServer () {
         )
       ): Boolean
     }
+
+    type Mutation {
+      validate (
+        port: Int @validate(port: TRUE)
+      ): Int
+    }
   `;
   const resolvers = {
     Query: {
@@ -65,6 +71,11 @@ function createServer () {
       },
       enumType (parent, args, context, info) {
         return true;
+      }
+    },
+    Mutation: {
+      validate (parent, args, context, info) {
+        return 5;
       }
     }
   };

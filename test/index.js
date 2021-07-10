@@ -32,6 +32,15 @@ describe('GraphQL Compatibility', () => {
     Assert.strictEqual(result.errors, undefined);
     Assert.strictEqual(result.data.enumType, true);
   });
+
+  it('works with mutations', async () => {
+    const server = createServer();
+    const query = 'mutation Validate { validate(port: 20) }';
+    const result = await server.executeOperation({ query });
+
+    Assert.strictEqual(result.errors, undefined);
+    Assert.strictEqual(result.data.validate, 5);
+  });
 });
 
 describe('Boolean', () => {
