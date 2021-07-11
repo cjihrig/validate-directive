@@ -9,6 +9,21 @@ function createServer () {
 
     enum TestEnum { A B C }
 
+    input LittleCatC {
+      foo: TestEnum @validate(case: UPPER, length: { limit: 1 })
+      string: String @validate(case: LOWER)
+    }
+
+    input LittleCatA {
+      underHat: LittleCatB @validate
+    }
+
+    input TestInput {
+      boolean: Boolean
+      port: Int @validate(port: TRUE)
+      cat: LittleCatA @validate
+    }
+
     type Query {
       validate (
         # Boolean validation - useless, just making sure it works.
@@ -45,6 +60,10 @@ function createServer () {
         length: String @validate(length: { limit: 4, encoding: "utf8" })
         maxLength: String @validate(maxLength: { limit: 3, encoding: "utf8" })
         minLength: String @validate(minLength: { limit: 4, encoding: "utf8" })
+
+        # Object validation.
+        object: TestInput @validate
+        objectNoValidation: TestInput
       ): Boolean
       nonNullable (
         foo: String! @validate(case: LOWER)
@@ -68,6 +87,11 @@ function createServer () {
       validate (
         port: Int @validate(port: TRUE)
       ): Int
+    }
+
+    input LittleCatB {
+      underHat: [LittleCatC]
+      ints: [Int]
     }
   `;
   const resolvers = {

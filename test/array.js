@@ -9,7 +9,7 @@ describe('Array', () => {
   it('can only be used on list types', () => {
     Assert.throws(() => {
       createServerWithListOpsOnNonList();
-    }, /non-list 'integer' attempted list validation/);
+    }, /'arrayLength' cannot be used to validate 'integer'/);
   });
 
   it('arrayLength()', async () => {
