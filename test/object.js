@@ -102,7 +102,7 @@ describe('Object', () => {
             underHat: {
               underHat: [
                 {
-                  string: 'FOO'
+                  string: ['FOO']
                 }
               ],
               ints: [5, 4, 3]
@@ -114,12 +114,12 @@ describe('Object', () => {
 
     Assert.deepStrictEqual(result.errors[0].extensions.exception.details[0], {
       context: {
-        key: 'string',
-        label: 'object.cat.underHat.underHat[0].string',
+        key: 0,
+        label: 'object.cat.underHat.underHat[0].string[0]',
         value: 'FOO'
       },
-      message: '"object.cat.underHat.underHat[0].string" must only contain lowercase characters',
-      path: ['object', 'cat', 'underHat', 'underHat', 0, 'string'],
+      message: '"object.cat.underHat.underHat[0].string[0]" must only contain lowercase characters',
+      path: ['object', 'cat', 'underHat', 'underHat', 0, 'string', 0],
       type: 'string.lowercase'
     });
     Assert.strictEqual(result.data.validate, null);

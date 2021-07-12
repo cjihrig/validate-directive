@@ -11,7 +11,7 @@ function createServer () {
 
     input LittleCatC {
       foo: TestEnum @validate(case: UPPER, length: { limit: 1 })
-      string: String @validate(case: LOWER)
+      string: [String] @validate(case: LOWER, alphanum: TRUE)
     }
 
     input LittleCatA {

@@ -12,6 +12,38 @@ describe('Array', () => {
     }, /'arrayLength' cannot be used to validate 'integer'/);
   });
 
+  it('validates if a scalar is passed', async () => {
+    const server = createServer();
+    const query = `
+      query Validate($foo: [String]) {
+        listType(foo: $foo)
+      }`;
+    let result = await server.executeOperation({
+      query,
+      variables: { foo: 'foo' }
+    });
+
+    Assert.strictEqual(result.errors, undefined);
+    Assert.strictEqual(result.data.listType, true);
+
+    result = await server.executeOperation({
+      query,
+      variables: { foo: 'FOO' }
+    });
+
+    Assert.deepStrictEqual(result.errors[0].extensions.exception.details[0], {
+      context: {
+        key: 0,
+        label: 'foo[0]',
+        value: 'FOO'
+      },
+      message: '"foo[0]" must only contain lowercase characters',
+      path: ['foo', 0],
+      type: 'string.lowercase'
+    });
+    Assert.strictEqual(result.data.listType, null);
+  });
+
   it('arrayLength()', async () => {
     const server = createServer();
     const query = `
