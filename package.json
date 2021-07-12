@@ -24,7 +24,7 @@
   "dependencies": {
     "graphql": "^15.5.1",
     "graphql-tools": "^7.0.5",
-    "joi": "^17.4.0"
+    "joi": "^17.4.1"
   },
   "devDependencies": {
     "@hapi/lab": "24.x.x",
