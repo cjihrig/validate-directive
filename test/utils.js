@@ -1,5 +1,6 @@
 'use strict';
 const { ApolloServer, gql } = require('apollo-server');
+const { makeExecutableSchema } = require('@graphql-tools/schema');
 const { ValidateDirective } = require('../lib');
 
 
@@ -133,11 +134,13 @@ function createServer () {
   };
 
   return new ApolloServer({
-    typeDefs,
-    resolvers,
-    schemaDirectives: {
-      validate: ValidateDirective
-    }
+    schema: makeExecutableSchema({
+      typeDefs,
+      resolvers,
+      schemaDirectives: {
+        validate: ValidateDirective
+      }
+    })
   });
 }
 
@@ -161,11 +164,13 @@ function createServerWithListOpsOnNonList () {
   };
 
   return new ApolloServer({
-    typeDefs,
-    resolvers,
-    schemaDirectives: {
-      validate: ValidateDirective
-    }
+    schema: makeExecutableSchema({
+      typeDefs,
+      resolvers,
+      schemaDirectives: {
+        validate: ValidateDirective
+      }
+    })
   });
 }
 

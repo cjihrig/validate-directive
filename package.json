@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@hapi/lab": "24.x.x",
-    "apollo-server": "^2.25.2",
+    "apollo-server": "^3.0.0",
     "belly-button": "7.x.x"
   },
   "keywords": [
