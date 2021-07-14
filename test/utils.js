@@ -64,6 +64,18 @@ function createServer () {
         # Object validation.
         object: TestInput @validate
         objectNoValidation: TestInput
+        objectLength: TestInput @validate(objectLength: 2)
+        objectMax: TestInput @validate(objectMax: 2)
+        objectMin: TestInput @validate(objectMin: 2)
+        and: TestInput @validate(and: ["boolean", "port"])
+        nand: TestInput @validate(nand: ["boolean", "port"])
+        or: TestInput @validate(or: ["boolean", "port"])
+        with: TestInput @validate(with: { key: "boolean", peers: ["port"] })
+        without: TestInput @validate(
+          without: { key: "boolean", peers: ["port"] }
+        )
+        oxor: TestInput @validate(oxor: ["boolean", "port"])
+        xor: TestInput @validate(xor: ["boolean", "port"])
       ): Boolean
       nonNullable (
         foo: String! @validate(case: LOWER)
@@ -89,6 +101,7 @@ function createServer () {
       ): Int
     }
 
+    # Do not attach any validation to LittleCatB
     input LittleCatB {
       underHat: [LittleCatC]
       ints: [Int]
