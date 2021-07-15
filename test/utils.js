@@ -175,4 +175,38 @@ function createServerWithListOpsOnNonList () {
 }
 
 
-module.exports = { createServer, createServerWithListOpsOnNonList };
+function createServerWithMissingDateCast () {
+  const typeDefs = gql`
+    ${ValidateDirective.sdl}
+
+    type Query {
+      typeConversion (
+        integerWithoutDateCast: Int @validate(dateGreater: "1-1-1950")
+      ): Boolean
+    }
+  `;
+  const resolvers = {
+    Query: {
+      typeConversion (parent, args, context, info) {
+        return true;
+      }
+    }
+  };
+
+  return new ApolloServer({
+    schema: makeExecutableSchema({
+      typeDefs,
+      resolvers,
+      schemaDirectives: {
+        validate: ValidateDirective
+      }
+    })
+  });
+}
+
+
+module.exports = {
+  createServer,
+  createServerWithListOpsOnNonList,
+  createServerWithMissingDateCast
+};

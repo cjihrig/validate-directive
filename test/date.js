@@ -1,11 +1,17 @@
 'use strict';
 const Assert = require('assert');
 const Lab = require('@hapi/lab');
-const { createServer } = require('./utils');
+const { createServer, createServerWithMissingDateCast } = require('./utils');
 const { describe, it } = exports.lab = Lab.script();
 
 
 describe('Date', () => {
+  it('date validation cannot be used without a type cast', () => {
+    Assert.throws(() => {
+      createServerWithMissingDateCast();
+    }, /'dateGreater' cannot be used to validate 'integerWithoutDateCast'/);
+  });
+
   it('dateGreater()', async () => {
     const server = createServer();
     const query = `
