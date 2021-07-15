@@ -84,6 +84,16 @@ function createServer () {
       listType (
         foo: [String] @validate(case: LOWER)
         arrayLength: [String] @validate(case: LOWER, arrayLength: 3)
+        arrayMax: [Int] @validate(arrayMax: 3)
+        arrayMin: [Int] @validate(arrayMin: 1)
+        sort: [TestInput] @validate(sort: { by: "port" })
+        sortDescending: [TestInput] @validate(
+          sort: { order: DESCENDING, by: "port" }
+        )
+        uniqueBoolean: [Boolean] @validate(unique: {})
+        uniqueObject: [TestInput] @validate(
+          unique: { comparator: "cat.underHat.ints.0" }
+        )
       ): Boolean
       enumType (
         foo: TestEnum @validate(
