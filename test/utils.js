@@ -58,9 +58,32 @@ function createServer () {
         alphanum: String @validate(alphanum: TRUE)
         base64: String @validate(base64: { paddingRequired: false })
         case: String @validate(case: UPPER)
+        creditCard: String @validate(creditCard: TRUE)
+        dataUri: String @validate(dataUri: { paddingRequired: true })
+        domain: String @validate(domain: { maxDomainSegments: 3 })
+        email: String @validate(email: { multiple: true, separator: "|" })
+        guid: String @validate(guid: {})
+        hex: String @validate(hex: true)
+        hostname: String @validate(hostname: TRUE)
+        ip: String @validate(ip: { version: [IPV6] })
+        ipWithCidr: String @validate(ip: { cidr: REQUIRED })
+        isoDate: String @validate(isoDate: TRUE)
+        isoDuration: String @validate(isoDuration: TRUE)
         length: String @validate(length: { limit: 4, encoding: "utf8" })
+        lowercase: String @validate(lowercase: TRUE)
         maxLength: String @validate(maxLength: { limit: 3, encoding: "utf8" })
         minLength: String @validate(minLength: { limit: 4, encoding: "utf8" })
+        normalize: String @validate(normalize: NFC)
+        pattern: String @validate(
+          pattern: { pattern: "^abc+$", flags: "i", name: "xyz" }
+        )
+        regex: String @validate(
+          regex: { pattern: "^abc+$", invert: true }
+        )
+        token: String @validate(token: TRUE)
+        trim: String @validate(trim: true)
+        uppercase: String @validate(uppercase: TRUE)
+        uuid: String @validate(uuid: { separator: COLON, version: [UUIDV4] })
 
         # Object validation.
         object: TestInput @validate
