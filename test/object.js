@@ -125,6 +125,84 @@ describe('Object', () => {
     Assert.strictEqual(result.data.validate, null);
   });
 
+  it('validation is inherited from the object definition', async () => {
+    const server = createServer();
+    const query = `
+      query Validate($inheritedValidation: InputWithValidation) {
+        validate(inheritedValidation: $inheritedValidation)
+      }`;
+    let result = await server.executeOperation({
+      query,
+      variables: {
+        inheritedValidation: {
+          card1: '4111111111111111',
+          card3: '4111111111111111'
+        }
+      }
+    });
+
+    Assert.strictEqual(result.errors, undefined);
+    Assert.strictEqual(result.data.validate, true);
+
+    // InputWithValidation sets objectMax to three. Verify that this setting
+    // is inherited.
+    result = await server.executeOperation({
+      query,
+      variables: {
+        inheritedValidation: {
+          card1: '4111111111111111',
+          card2: '4111111111111111',
+          card3: '4111111111111111',
+          card4: '4111111111111111'
+        }
+      }
+    });
+
+    Assert.deepStrictEqual(result.errors[0].extensions.exception.details[0], {
+      context: {
+        key: 'inheritedValidation',
+        label: 'inheritedValidation',
+        limit: 3,
+        value: {
+          card1: '4111111111111111',
+          card2: '4111111111111111',
+          card3: '4111111111111111',
+          card4: '4111111111111111'
+        }
+      },
+      message: '"inheritedValidation" must have less than or equal to 3 keys',
+      path: ['inheritedValidation'],
+      type: 'object.max'
+    });
+    Assert.strictEqual(result.data.validate, null);
+
+    // InputWithValidation also sets objectMin to one, but the resolver
+    // overrides objectMin to two. Verify that this override is respected.
+    result = await server.executeOperation({
+      query,
+      variables: {
+        inheritedValidation: {
+          card1: '4111111111111111'
+        }
+      }
+    });
+
+    Assert.deepStrictEqual(result.errors[0].extensions.exception.details[0], {
+      context: {
+        key: 'inheritedValidation',
+        label: 'inheritedValidation',
+        limit: 2,
+        value: {
+          card1: '4111111111111111'
+        }
+      },
+      message: '"inheritedValidation" must have at least 2 keys',
+      path: ['inheritedValidation'],
+      type: 'object.min'
+    });
+    Assert.strictEqual(result.data.validate, null);
+  });
+
   it('objectLength()', async () => {
     const server = createServer();
     const query = `

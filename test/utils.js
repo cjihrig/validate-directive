@@ -8,6 +8,13 @@ function createServer () {
   const typeDefs = gql`
     enum TestEnum { A B C }
 
+    input InputWithValidation @validate(objectMin: 1, objectMax: 3) {
+      card1: String @validate(creditCard: TRUE)
+      card2: String @validate(creditCard: TRUE)
+      card3: String @validate(creditCard: TRUE)
+      card4: String @validate(creditCard: TRUE)
+    }
+
     input LittleCatC {
       foo: TestEnum @validate(case: UPPER, length: { limit: 1 })
       string: [String] @validate(case: LOWER, alphanum: TRUE)
@@ -98,6 +105,7 @@ function createServer () {
         )
         oxor: TestInput @validate(oxor: ["boolean", "port"])
         xor: TestInput @validate(xor: ["boolean", "port"])
+        inheritedValidation: InputWithValidation @validate(objectMin: 2)
       ): Boolean
       nonNullable (
         foo: String! @validate(case: LOWER)

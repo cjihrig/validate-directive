@@ -16,6 +16,12 @@ Some joi API names are duplicated across data types. For example, in joi, `min()
 
 For questions regarding how specific joi validation functions work, see the [joi documentation](https://joi.dev/).
 
+## Features
+
+- Input validation for GraphQL primitives, enums, lists, and input objects.
+- Validation provided on input objects is inherited, and can be overridden in other locations within the schema. This allows validation to be centralized with the input type and reused.
+- The name of the directive and related input types is configurable.
+
 ## Usage
 
 ```graphql
