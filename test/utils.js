@@ -1,13 +1,11 @@
 'use strict';
 const { ApolloServer, gql } = require('apollo-server');
 const { makeExecutableSchema } = require('@graphql-tools/schema');
-const { ValidateDirective } = require('../lib');
+const { validateDirective } = require('../lib');
 
 
 function createServer () {
   const typeDefs = gql`
-    ${ValidateDirective.sdl}
-
     enum TestEnum { A B C }
 
     input LittleCatC {
@@ -133,6 +131,9 @@ function createServer () {
       validate (
         port: Int @validate(port: TRUE)
       ): Int
+      doesNotUseDirective (
+        port: Int
+      ): Int
     }
 
     # Do not attach any validation to LittleCatB
@@ -162,26 +163,30 @@ function createServer () {
     Mutation: {
       validate (parent, args, context, info) {
         return 5;
+      },
+      doesNotUseDirective (parent, args, context, info) {
+        return 3;
       }
     }
   };
 
-  return new ApolloServer({
-    schema: makeExecutableSchema({
-      typeDefs,
-      resolvers,
-      schemaDirectives: {
-        validate: ValidateDirective
-      }
-    })
+  const {
+    validateDirectiveTypeDefs,
+    validateDirectiveTransformer
+  } = validateDirective('validate');
+  let schema = makeExecutableSchema({
+    typeDefs: [validateDirectiveTypeDefs, typeDefs],
+    resolvers
   });
+
+  schema = validateDirectiveTransformer(schema);
+
+  return new ApolloServer({ schema });
 }
 
 
 function createServerWithListOpsOnNonList () {
   const typeDefs = gql`
-    ${ValidateDirective.sdl}
-
     type Query {
       validate (
         integer: Float @validate(arrayLength: 3)
@@ -196,22 +201,23 @@ function createServerWithListOpsOnNonList () {
     }
   };
 
-  return new ApolloServer({
-    schema: makeExecutableSchema({
-      typeDefs,
-      resolvers,
-      schemaDirectives: {
-        validate: ValidateDirective
-      }
-    })
+  const {
+    validateDirectiveTypeDefs,
+    validateDirectiveTransformer
+  } = validateDirective('validate');
+  let schema = makeExecutableSchema({
+    typeDefs: [validateDirectiveTypeDefs, typeDefs],
+    resolvers
   });
+
+  schema = validateDirectiveTransformer(schema);
+
+  return new ApolloServer({ schema });
 }
 
 
 function createServerWithMissingDateCast () {
   const typeDefs = gql`
-    ${ValidateDirective.sdl}
-
     type Query {
       typeConversion (
         integerWithoutDateCast: Int @validate(dateGreater: "1-1-1950")
@@ -226,15 +232,18 @@ function createServerWithMissingDateCast () {
     }
   };
 
-  return new ApolloServer({
-    schema: makeExecutableSchema({
-      typeDefs,
-      resolvers,
-      schemaDirectives: {
-        validate: ValidateDirective
-      }
-    })
+  const {
+    validateDirectiveTypeDefs,
+    validateDirectiveTransformer
+  } = validateDirective('validate');
+  let schema = makeExecutableSchema({
+    typeDefs: [validateDirectiveTypeDefs, typeDefs],
+    resolvers
   });
+
+  schema = validateDirectiveTransformer(schema);
+
+  return new ApolloServer({ schema });
 }
 
 
