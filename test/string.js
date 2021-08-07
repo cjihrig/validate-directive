@@ -651,6 +651,23 @@ describe('String', () => {
     Assert.strictEqual(result.data.validate, null);
   });
 
+  it('trim() updates the string if convert is true', async () => {
+    const server = createServer();
+    const query = `
+      query Validate($trim: String!) {
+        echoString(trim: $trim)
+      }`;
+    const result = await server.executeOperation({
+      query,
+      variables: {
+        trim: '    a non-trimmed string     '
+      }
+    });
+
+    Assert.strictEqual(result.errors, undefined);
+    Assert.strictEqual(result.data.echoString, 'a non-trimmed string');
+  });
+
   it('uppercase()', async () => {
     const server = createServer();
     const query = `

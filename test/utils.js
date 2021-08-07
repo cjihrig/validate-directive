@@ -30,6 +30,11 @@ function createServer () {
       cat: LittleCatA @validate
     }
 
+    type Test {
+      boolean: Boolean
+      port: Int
+    }
+
     type Query {
       validate (
         # Boolean validation - useless, just making sure it works.
@@ -133,6 +138,14 @@ function createServer () {
         stringToDate: String @validate(type: DATE)
         integerToDate: Int @validate(type: DATE)
       ): Boolean
+      echoList (
+        sort: [TestInput]! @validate(
+          arrayPrefs: { convert: true }, sort: { by: "port" }
+        )
+      ): [Test]
+      echoString (
+        trim: String! @validate(trim: true, prefs: { convert: true })
+      ): String
     }
 
     type Mutation {
@@ -166,6 +179,12 @@ function createServer () {
       },
       typeConversion (parent, args, context, info) {
         return true;
+      },
+      echoList (parent, args, context, info) {
+        return args.sort;
+      },
+      echoString (parent, args, context, info) {
+        return args.trim;
       }
     },
     Mutation: {

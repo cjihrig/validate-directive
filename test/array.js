@@ -191,6 +191,26 @@ describe('Array', () => {
     Assert.strictEqual(result.data.listType, true);
   });
 
+  it('sort() updates the array if convert is true', async () => {
+    const server = createServer();
+    const query = `
+      query Validate($sort: [TestInput]!) {
+        echoList(sort: $sort) { boolean port }
+      }`;
+    const result = await server.executeOperation({
+      query,
+      variables: {
+        sort: [{ port: 9000 }, { port: 4000 }, { port: 80 }]
+      }
+    });
+
+    Assert.strictEqual(result.errors, undefined);
+    Assert.strictEqual(result.data.echoList.length, 3);
+    Assert.strictEqual(result.data.echoList[0].port, 80);
+    Assert.strictEqual(result.data.echoList[1].port, 4000);
+    Assert.strictEqual(result.data.echoList[2].port, 9000);
+  });
+
   it('unique()', async () => {
     const server = createServer();
     let query = `
